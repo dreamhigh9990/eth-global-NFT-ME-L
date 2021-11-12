@@ -44,6 +44,7 @@ export default function MainMyNFTs() {
 
   const [data, setData] = useState({ customer: "", product: "", mintAmount: 0 });
   const [products, setProducts] = useState([]);
+  const [sends, setSends] = useState([]);
   const [nfts, setNFTs] = useState([]);
 
   useEffect(() => {
@@ -55,7 +56,22 @@ export default function MainMyNFTs() {
     const saved1 = localStorage.getItem("firstname");
     const initialValue1 = JSON.parse(saved1);
     const events1 = initialValue1;
-    setNFTs(extractDataForTable1(events1));
+    setSends(extractDataForTable1(events1));
+
+    var output = [];
+    events1.forEach(function (item) {
+      var existing = output.filter(function (v, i) {
+        return v.customer == item.customer && v.product == item.product;
+      });
+      if (existing.length) {
+        var existingIndex = output.indexOf(existing[0]);
+        output[existingIndex].mintAmount = Number(output[existingIndex].mintAmount) + Number(item.mintAmount);
+      } else {
+        if (typeof item.product == 'string')
+          output.push(item);
+      }
+    });
+    setNFTs(extractDataForTable1(output));
   }, []);
 
   const columns = [
@@ -83,8 +99,20 @@ export default function MainMyNFTs() {
     <Container>
       <EuiFlexGroup>
         <EuiFlexItem>
+          <EuiFormRow
+            style={{ marginTop: 80 }}>
+            <EuiText>NFT</EuiText>
+          </EuiFormRow>
+          <EuiBasicTable
+            columns={columns}
+            items={nfts}
+            style={{ marginTop: 20 }}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem>
           <EuiForm component="form">
-            <EuiFormRow>
+            <EuiFormRow
+              style={{ marginTop: 50 }}>
               <EuiText>Sell</EuiText>
             </EuiFormRow>
             <EuiFormRow label="customer">
@@ -105,7 +133,7 @@ export default function MainMyNFTs() {
                 }}
               />
             </EuiFormRow>
-            <EuiFormRow label="mintAmount">
+            <EuiFormRow label="amount">
               <EuiFieldNumber
                 name="mintAmount"
                 value={data.mintAmount}
@@ -128,11 +156,28 @@ export default function MainMyNFTs() {
                   localStorage.setItem("lastname", JSON.stringify(sell));
                   setProducts(extractDataForTable(sell));
 
-                  const sell1 = nfts;
-                  const nftInfo = { "customer": data.customer, "product": data.product, "mintAmount": data.mintAmount };
-                  sell1.push(nftInfo);
+                  const sell1 = sends;
+                  const sendInfo = { "customer": data.customer, "product": data.product, "mintAmount": data.mintAmount };
+                  sell1.push(sendInfo);
                   localStorage.setItem("firstname", JSON.stringify(sell1));
-                  setNFTs(extractDataForTable1(sell1));
+                  setSends(extractDataForTable1(sell1));
+                  console.log(sell1);
+
+                  var output = [];
+                  sell1.forEach(function (item) {
+                    var existing = output.filter(function (v, i) {
+                      return v.customer == item.customer && v.product == item.product;
+                    });
+                    if (existing.length) {
+                      var existingIndex = output.indexOf(existing[0]);
+                      output[existingIndex].mintAmount = Number(output[existingIndex].mintAmount) + Number(item.mintAmount);
+                    } else {
+                      if (typeof item.product == 'string')
+                        output.push(item);
+                    }
+                  });
+
+                  setNFTs(extractDataForTable1(output));
                 }}
               >
                 Mint
@@ -141,10 +186,13 @@ export default function MainMyNFTs() {
           </EuiForm>
         </EuiFlexItem>
         <EuiFlexItem>
+          <EuiFormRow>
+            <EuiText>Sent</EuiText>
+          </EuiFormRow>
           <EuiBasicTable
             columns={columns}
-            items={nfts}
-            style={{ marginTop: 100 }}
+            items={sends}
+            style={{ marginTop: 30 }}
           />
         </EuiFlexItem>
       </EuiFlexGroup>
