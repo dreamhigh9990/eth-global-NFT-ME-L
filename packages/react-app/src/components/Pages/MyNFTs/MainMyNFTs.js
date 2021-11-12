@@ -59,18 +59,20 @@ export default function MainMyNFTs() {
     setSends(extractDataForTable1(events1));
 
     var output = [];
-    events1.forEach(function (item) {
-      var existing = output.filter(function (v, i) {
-        return v.customer == item.customer && v.product == item.product;
+    if (events1 != null) {
+      events1.forEach(function (item) {
+        var existing = output.filter(function (v, i) {
+          return v.customer == item.customer && v.product == item.product;
+        });
+        if (existing.length) {
+          var existingIndex = output.indexOf(existing[0]);
+          output[existingIndex].mintAmount = Number(output[existingIndex].mintAmount) + Number(item.mintAmount);
+        } else {
+          if (typeof item.product == 'string')
+            output.push(item);
+        }
       });
-      if (existing.length) {
-        var existingIndex = output.indexOf(existing[0]);
-        output[existingIndex].mintAmount = Number(output[existingIndex].mintAmount) + Number(item.mintAmount);
-      } else {
-        if (typeof item.product == 'string')
-          output.push(item);
-      }
-    });
+    }
     setNFTs(extractDataForTable1(output));
   }, []);
 
@@ -161,21 +163,22 @@ export default function MainMyNFTs() {
                   sell1.push(sendInfo);
                   localStorage.setItem("firstname", JSON.stringify(sell1));
                   setSends(extractDataForTable1(sell1));
-                  console.log(sell1);
 
                   var output = [];
-                  sell1.forEach(function (item) {
-                    var existing = output.filter(function (v, i) {
-                      return v.customer == item.customer && v.product == item.product;
+                  if (sell1.length) {
+                    sell1.forEach(function (item) {
+                      var existing = output.filter(function (v, i) {
+                        return v.customer == item.customer && v.product == item.product;
+                      });
+                      if (existing.length) {
+                        var existingIndex = output.indexOf(existing[0]);
+                        output[existingIndex].mintAmount = Number(output[existingIndex].mintAmount) + Number(item.mintAmount);
+                      } else {
+                        if (typeof item.product == 'string')
+                          output.push(item);
+                      }
                     });
-                    if (existing.length) {
-                      var existingIndex = output.indexOf(existing[0]);
-                      output[existingIndex].mintAmount = Number(output[existingIndex].mintAmount) + Number(item.mintAmount);
-                    } else {
-                      if (typeof item.product == 'string')
-                        output.push(item);
-                    }
-                  });
+                  }
 
                   setNFTs(extractDataForTable1(output));
                 }}
