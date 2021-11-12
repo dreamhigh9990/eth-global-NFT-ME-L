@@ -17,7 +17,7 @@ export default function Header(props) {
           <EuiHeaderSectionItem border="right">
             <EuiHeaderLink href="/">
               <PageHeader
-                title="NFT-ME"
+                title="GENCECH"
                 subTitle=""
                 style={{ cursor: "pointer" }}
               />

@@ -6,9 +6,8 @@ import { EuiFilePicker } from "@elastic/eui";
 export default function ManufacturerSample() {
   const { TextArea } = Input;
 
-  const [customer, setCustomer] = useState();
   const [product, setProduct] = useState();
-  const [mintAmount, setMintAmount] = useState();
+  const [amount, setAmount] = useState();
   const [date, setDate] = useState();
   const [serial, setSerial] = useState();
   const [meterials, setMeterials] = useState();
@@ -29,16 +28,6 @@ export default function ManufacturerSample() {
       <div style={{ padding: 70, textAlign: "left" }}>
         <Row gutter={[16, 16]}>
           <Col xs={24} xl={12}>
-            <Typography style={{ marginBottom: "7px" }}>Customer:</Typography>
-            <Input
-              value={customer}
-              onChange={(e) => {
-                setCustomer(e.target.value);
-              }}
-            />
-          </Col>
-          <Col xs={24} xl={12} />
-          <Col xs={24} xl={12}>
             <Typography style={{ marginBottom: "7px" }}>Product Name:</Typography>
             <Input
               value={product}
@@ -50,9 +39,9 @@ export default function ManufacturerSample() {
           <Col xs={24} xl={12}>
             <Typography style={{ marginBottom: "7px" }}>Mint Amount:</Typography>
             <Input
-              value={mintAmount}
+              value={amount}
               onChange={(e) => {
-                setMintAmount(e.target.value);
+                setAmount(e.target.value);
               }}
             />
           </Col>
@@ -112,7 +101,7 @@ export default function ManufacturerSample() {
                 const saved = localStorage.getItem("lastname");
                 const initialValue = JSON.parse(saved);
                 const products = initialValue || [];
-                const productInfo = { "customer": customer, "product": product, "mintAmount": mintAmount, "date": date, "serial": serial };
+                const productInfo = { "mintAmount": "0", "product": product, "amount": amount, "date": date, "serial": serial };
                 products.push(productInfo);
                 localStorage.setItem("lastname", JSON.stringify(products));
                 console.log("data", products);

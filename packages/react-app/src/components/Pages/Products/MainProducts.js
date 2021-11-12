@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import useEventListener from "../../../hooks/EventListener";
+
 import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiBasicTable,
   EuiButton,
-  EuiFormRow,
 } from "@elastic/eui";
 
 import Container from "../../Styled/Container";
-import { useHistory } from "react-router-dom";
 
 function extractDataForTable(data) {
   if (!data || !data.length) {
@@ -17,15 +15,15 @@ function extractDataForTable(data) {
   }
 
   return data.map((item) => ({
-    customer: item.customer,
-    product: item.product,
     mintAmount: item.mintAmount,
+    product: item.product,
+    amount: item.amount,
     date: item.date,
     serial: item.serial,
   }));
 }
 
-export default function MainProducts(props) {
+export default function MainProducts() {
 
   const [products, setProducts] = useState([]);
 
@@ -38,21 +36,20 @@ export default function MainProducts(props) {
 
   const columns = [
     {
-      field: "customer",
-      name: "Customer",
-      sortable: true,
-      truncateText: false,
-      render: (item) => <span>{item}</span>,
-    },
-    {
       field: "product",
       name: "Product",
       truncateText: false,
       render: (item) => <span>{item}</span>,
     },
     {
+      field: "amount",
+      name: "Amount",
+      truncateText: false,
+      render: (item) => <span>{item}</span>,
+    },
+    {
       field: "mintAmount",
-      name: "Mint Amount",
+      name: "mintAmount",
       truncateText: false,
       render: (item) => <span>{item}</span>,
     },
@@ -79,7 +76,6 @@ export default function MainProducts(props) {
             items={products}
             style={{ marginTop: 30, width: "100%" }}
           />
-
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiFlexGroup>

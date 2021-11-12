@@ -28,8 +28,10 @@ import MainContract from "./components/Pages/Contract/MainContract";
 import IpfsSample from "./components/Pages/IPFS/IpfsSample";
 import MainStage from "./components/Pages/Stage/MainStage";
 
-import MainProducts from "./components/Pages/Products/MainProducts";
+import MainMyNFTs from "./components/Pages/MyNFTs/MainMyNFTs";
 import ManufacturerSample from "./components/Pages/Manufacturer/ManufacturerSample";
+import MainProducts from "./components/Pages/Products/MainProducts";
+
 
 const mainnetProvider = new ethers.providers.JsonRpcProvider(
   "http://localhost:8545/"
@@ -143,6 +145,12 @@ function App() {
           <Route path="/products">
             {
               <MainProducts
+              />
+            }
+          </Route>
+          <Route path="/mynfts">
+            {
+              <MainMyNFTs
               />
             }
           </Route>
