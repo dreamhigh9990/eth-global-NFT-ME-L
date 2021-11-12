@@ -93,6 +93,7 @@ export default function MainProducts() {
             width="50px"
             onClick={() => {
               localStorage.setItem("lastname", JSON.stringify([]));
+              localStorage.setItem("firstname", JSON.stringify([]));
               setProducts([]);
             }}
           >

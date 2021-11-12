@@ -23,6 +23,20 @@ function extractDataForTable(data) {
     mintAmount: item.mintAmount,
     product: item.product,
     amount: item.amount,
+    date: item.date,
+    serial: item.serial,
+  }));
+}
+
+function extractDataForTable1(data) {
+  if (!data || !data.length) {
+    return [];
+  }
+
+  return data.map((item) => ({
+    customer: item.customer,
+    product: item.product,
+    mintAmount: item.mintAmount,
   }));
 }
 
@@ -30,15 +44,27 @@ export default function MainMyNFTs() {
 
   const [data, setData] = useState({ customer: "", product: "", mintAmount: 0 });
   const [products, setProducts] = useState([]);
+  const [nfts, setNFTs] = useState([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("lastname");
     const initialValue = JSON.parse(saved);
     const events = initialValue;
     setProducts(extractDataForTable(events));
+
+    const saved1 = localStorage.getItem("firstname");
+    const initialValue1 = JSON.parse(saved1);
+    const events1 = initialValue1;
+    setNFTs(extractDataForTable1(events1));
   }, []);
 
   const columns = [
+    {
+      field: "customer",
+      name: "customer",
+      truncateText: false,
+      render: (item) => <span>{item}</span>,
+    },
     {
       field: "product",
       name: "product",
@@ -46,14 +72,8 @@ export default function MainMyNFTs() {
       render: (item) => <span>{item}</span>,
     },
     {
-      field: "amount",
-      name: "amount",
-      truncateText: false,
-      render: (item) => <span>{item}</span>,
-    },
-    {
       field: "mintAmount",
-      name: "mintAmount",
+      name: "NFT",
       truncateText: false,
       render: (item) => <span>{item}</span>,
     }
@@ -107,7 +127,12 @@ export default function MainMyNFTs() {
                   });
                   localStorage.setItem("lastname", JSON.stringify(sell));
                   setProducts(extractDataForTable(sell));
-                  console.log(products);
+
+                  const sell1 = nfts;
+                  const nftInfo = { "customer": data.customer, "product": data.product, "mintAmount": data.mintAmount };
+                  sell1.push(nftInfo);
+                  localStorage.setItem("firstname", JSON.stringify(sell1));
+                  setNFTs(extractDataForTable1(sell1));
                 }}
               >
                 Mint
@@ -118,7 +143,7 @@ export default function MainMyNFTs() {
         <EuiFlexItem>
           <EuiBasicTable
             columns={columns}
-            items={products}
+            items={nfts}
             style={{ marginTop: 100 }}
           />
         </EuiFlexItem>
